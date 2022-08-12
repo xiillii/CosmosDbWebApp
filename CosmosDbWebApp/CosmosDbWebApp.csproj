@@ -6,4 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Microsoft.Azure.Cosmos" />
+    <None Remove="Views\Item\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.29.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Item\" />
+  </ItemGroup>
 </Project>
