@@ -50,8 +50,62 @@ namespace CosmosDbWebApp.Controllers
         {
             if (id == null)
             {
-
+                return BadRequest();
             }
+
+            var item = await _cosmosDbService.GetItemAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditAsync([Bind("Id,Name,Description,Completed")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                await _cosmosDbService.UpdateItemAsync(item.Id, item);
+                return RedirectToAction("Index");
+            }
+
+            return View(item);
+        }
+
+        [ActionName("Delete")]
+        public async Task<ActionResult> DeleteAsync(string id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var item = await _cosmosDbService.GetItemAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmedAsync([Bind("Id")] string id)
+        {
+            await _cosmosDbService.DeleteItemAsync(id);
+            return RedirectToAction("Index");
+        }
+
+        [ActionName("Details")]
+        public async Task<ActionResult> DetailAsync(string id)
+        {
+            return View(await _cosmosDbService.GetItemAsync(id));
         }
     }
 }
